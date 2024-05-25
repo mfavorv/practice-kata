@@ -6,7 +6,7 @@ function finalBalance(transactions, dates){
   for(let amount of transactions){
     balance += amount
   }
-
+let months = []
   for (day of dates){
     dateNum = day.split("-");
     mth = parseInt(dateNum[1], 10)
@@ -46,12 +46,12 @@ for(let index of duplicateIndexes){
 
 let deduction = 0;
 if(card > 2 && initialBalance >99 ){
-  deduction = 55
+  deduction = 60
 }else if(card > 2 && initialBalance >99 && firstBal > 99){
   deduction = 50
 }
 else {
-  deduction = 60
+  deduction = 55
 }
 
 balance -= deduction;
