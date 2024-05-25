@@ -1,60 +1,36 @@
-function finalBalance(transactions, dates){
+function finalBalance(transactions, dates) {
   let balance = 0;
-  let card = 0;
-  let incomingTransfer = 0;
+  const monthlyPayments = {};
+  const monthlyPaymentTotal = {};
 
-  for(let amount of transactions){
-    balance += amount
+ 
+  for (let i = 0; i < transactions.length; i++) {
+    const amount = transactions[i];
+    const dateStr = dates[i];
+    const month = parseInt(dateStr.split("-")[1], 10);
+
+    balance += amount;
+
+    if (amount < 0) {
+      monthlyPayments[month] = (monthlyPayments[month] || 0) + 1;
+      monthlyPaymentTotal[month] = (monthlyPaymentTotal[month] || 0) + Math.abs(amount);
+    }
   }
-let months = []
-  for (day of dates){
-    dateNum = day.split("-");
-    mth = parseInt(dateNum[1], 10)
-    months.push(mth)
- }
 
- let duplicateIndexes = [];
- let singleIndex = [];
- for (let i = 0; i < months.length; i++) {
-     for (let j = i + 1; j < months.length; j++) {
-         if (months[i] === months[j]) {         
-                 duplicateIndexes.push(i);
-                 duplicateIndexes.push(j);
-         } else{
-                 singleIndex.push(i,j)
-         }
-     }
- }
 
- let initialBalance = 0;
- for(let index of duplicateIndexes){
-   initialBalance += transactions[index]
- }
+  for (let month = 1; month <= 12; month++) {
+    if (monthlyPayments[month] >= 3 && monthlyPaymentTotal[month] >= 100) {
+      continue;
+    }
+    balance -= 5;
+  }
 
- let firstBal = 0;
- for(let index of duplicateIndexes){
-  firstBal += transactions[index]
+  return balance;
 }
 
-for(let index of duplicateIndexes){
- if(transactions[index] < 0){
-  card++
- } else {
-  incomingTransfer++
- }
-}
 
-let deduction = 0;
-if(card > 2 && initialBalance >99 ){
-  deduction = 60
-}else if(card > 2 && initialBalance >99 && firstBal > 99){
-  deduction = 50
-}
-else {
-  deduction = 55
-}
-
-balance -= deduction;
-return balance;
-}
-finalBalance(t[1, -1, 0, -105, 1], ["2020−12−31", "2020-04-04", "2020-04-04", "2020-04-14", "2020-07-12"])
+  finalBalance(
+    [100, 100, 100, -10],
+    ["2020-12-31", "2020-12-22", "2020-12-03", "2020-12-29"],
+  )
+   // Should return 230
