@@ -12,8 +12,12 @@ function finalBalance(transactions, dates) {
     balance += amount;
 
     if (amount < 0) {
-      monthlyPayments[month] = (monthlyPayments[month] || 0) + 1;
-      monthlyPaymentTotal[month] = (monthlyPaymentTotal[month] || 0) + Math.abs(amount);
+      if (!monthlyPayments[month]) {
+        monthlyPayments[month] = 0;
+        monthlyPaymentTotal[month] = 0;
+      }
+      monthlyPayments[month] += 1;
+      monthlyPaymentTotal[month] += Math.abs(amount);
     }
   }
 
